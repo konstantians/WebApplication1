@@ -43,4 +43,8 @@
 	<!-- another package who is referenced by the packagereference-->
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Testfileforcommit\" />
+  </ItemGroup>
+
 </Project>
