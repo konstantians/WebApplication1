@@ -1,0 +1,71 @@
+﻿@model IEnumerable<IdentityRole>
+<!-- to pass the role we need to use Ienumerable(because the roles are a list) and then identityrole because the role inherites from that -->
+<!-- and then pretty much Model = roles which we passed in-->
+@{
+    ViewBag.Title = "All roles";
+}
+
+<!-- to be able to understand if a user has the claims to see certain elements in the view, we use the Interface IAuthorizationService -->
+@inject IAuthorizationService authorizationService
+
+<h1>All Roles</h1>
+<!-- apparently with that Model is the roles we passed in -->
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" style="width:auto;" asp-controller="administration" asp-action="createrole">Add new role</a>
+
+    foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role Id : @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @role.Name
+                </h5>
+            </div>
+            <div class="card-footer">
+                <form method="post" asp-controller="administration" asp-action="deleterole" asp-route-id="@role.Id">
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    {
+                        <a asp-controller="administration" asp-action="editrole" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+                    }
+                    @if ((await authorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
+                    {
+                        <span style="display:none;" id="confirmDeleteSpan_@role.Id">
+                            <span>Are you sure you want to delete that role?</span>
+                            <a class="btn btn-primary text-white" onclick="confirmDelete('@role.Id', false)">No</a>
+                            <button type="submit" asp-controller="administration" asp-action="deleterole" asp-route-id="@role.Id" class="btn btn-danger">
+                                Yes
+                            </button>
+                        </span>
+                        <span id="deleteSpan_@role.Id">
+                            <a class="btn btn-danger text-white" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                        </span>
+                    }
+
+
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No roles created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a role
+            </h5>
+            <a class="btn btn-primary" style="width:auto;" asp-controller="administration" asp-action="createrole">Add new role</a>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

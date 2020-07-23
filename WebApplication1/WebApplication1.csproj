@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <!--random but bookmarks are stored inside the solution so you can extract them easy and if you want someone to see the code -->
+  <!-- with visual studio you must give them the solution which can contain more than one projects -->
+  <!-- this is an xml page with configuration for ASP.NET CORE-->
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework> <!-- mentions the version of the ASP.NET CORE(here 2.2)-->
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <UserSecretsId>7668b15c-f3a2-4ac1-85e6-20c6ae53e643</UserSecretsId><!-- mentions if it is InProcess or OutOfProcess -->
+	  <!-- InProcess uses IIS Express server(on default as webserver) we can use Apache,IIS or others-->
+	  <!-- OutOfProcess uses kestrel as the internal server and it uses as an external server 
+	  or the proxy server IIS,Apache,Nginx or it uses kestrel as an internal and external server together(edge server)-->
+	  <!-- InProcess has better performance IIS Express server is a lightweight version of IIS-->
+	  <!--AsoNetCoreHostingModel can be overriden if you use cli(commandline for visual studio)-->
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;NU1701</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20200704164417_AddPhotoPathColumn.cs" />
+    <Compile Remove="Migrations\20200704164417_AddPhotoPathColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200704172909_Addphotopath.cs" />
+    <Compile Remove="Migrations\20200704172909_Addphotopath.Designer.cs" />
+    <Compile Remove="Migrations\20200704172950_AddSomeProperty.cs" />
+    <Compile Remove="Migrations\20200704172950_AddSomeProperty.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="nlog.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+	<!-- mentions the nuget packages in the application (they are in the dependencies) -->
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.App" /> <!-- this is a metapackage,
+	a metapackage has no content of its own and has a list of dependencies who are in the dependencies/packages folder
+	in metapackages we don't usually include version-->
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
+	<!-- another package who is referenced by the packagereference-->
+  </ItemGroup>
+
+</Project>

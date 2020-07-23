@@ -1,0 +1,76 @@
+﻿@*@model IEnumerable<WebApplication1.Models.Employee>*@
+@model IEnumerable<Employee> 
+<!-- it is not needed any more because of viewimports-->
+
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml"; not needed anymore because of viewstart
+    ViewBag.Title = "Employee Index";
+}
+
+
+<div class="card-deck">
+    @foreach (var employee in Model)
+    {
+
+        var photopath = "~/images/" + (employee.Photopath ?? "profile.png");
+
+        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+            <div class="card-header">
+                <h3>@employee.Name</h3>
+            </div>
+            @*we use the .imgthumbnail which is a custom class in site.css(css folder) to make all images
+                have the same width and height*@
+            <img class="card-img-top imageThumbnail" asp-append-version="true" src="@photopath" />
+            <div class="card-footer text-center">
+                <!-- the ordinary way to do that with html not used in mvc-->
+                @*<a href="/home/details/@employee.Id" class="btn btn-primary">View</a>*@
+                <!-- another way to do it is with html helpers-->
+                <!-- the following taghelp creates essentionally a <a> element with name View-->
+                <!-- then when it is clicked the action is details the controller is home-->
+                <!-- and the id is employee.id-->
+                @*@Html.ActionLink("View", "Details", "Home", new { id = employee.Id })*@
+
+                <!-- if we want the helper in an <a> element we use the url.action taghelper-->
+                @*<a href="@Url.Action("details","home",new { id = employee.Id})"
+                class="btn btn-primary">Show</a>*@
+
+                <!-- in asp.net core we use the new tag helpers, it is considered a good practise-->
+                <!-- the reason we use tag helpers insted of href="..." is that with tag helpers-->
+                <!-- if we add after the project is finished a randomfolder/home/details the project will work fine-->
+                <!-- but if we use href = "..." then the project wont work because the path will not be correct-->
+                <!-- asp-controller and the name of the controller asp-action and the name of the action-->
+                <!-- then if we have parameteres in the name of the action we use asp-route-(name of the parameter)-->
+                <!-- in this case id if the parameter was abc it would be asp-route abc-->
+                
+                <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id"
+                   class="btn btn-primary m-1">View</a>
+                <a asp-controller="home" asp-action="edit" asp-route-id ="@employee.Id" class="btn btn-primary m-1">Edit</a>
+                <a href="#" class="btn btn-danger m-1">Delete</a>
+            </div>
+        </div>
+    }
+</div>
+
+@*<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Name</td>
+                <td>@employee.Department</td>
+            </tr>
+        }
+    </tbody>
+
+</table>*@
+@section Scripts{
+
+}

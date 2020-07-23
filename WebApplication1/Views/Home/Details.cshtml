@@ -1,0 +1,98 @@
+﻿<!-- we use at model to make the view strongly typed view -->
+@*@model WebApplication1.Models.Employee*@
+@*@model WebApplication1.Viewmodels.HomeDetailsViewModel *@ <!-- not needed anymore because of view imports-->
+
+<!-- for some fucking reason it doesnt import the WebApplication1.Viewmodels so i just imported it like that -->
+<!-- it should be just HomeDetailsViewModel but it doesnt fucking work-->
+@model WebApplication1.Viewmodels.HomeDetailsViewModel
+
+<!-- connect layout file-->
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml"; not needed anymore because of viewstart
+    ViewBag.Title = "Employee Details";
+    //the ?? operand returns the left part if it isnt null else it returns the write part
+    var photoPath = "~/images/" + (Model.Employee.Photopath ?? "profile.png");
+}
+
+<!-- for the view model model directive can only be used once-->
+<!-- the view is responsible for the depiction of the data, it should not have complicated logic-->
+<!-- in viewdata the string is the default return type-->
+@*<h3>@ViewData["PageTitle"]</h3>
+
+    <!-- to write multiple lines of code in razor view do the following-->
+    @{
+            var employee = ViewData["Employee"] as WebApplication1.Models.Employee;
+        }
+        <div>
+            Name: @employee.Name
+        </div>
+        <div>
+            Email: @employee.Email
+        </div>
+        <div>
+            Department: @employee.Department
+        </div>
+*@
+<!-- viewdata is not ideal because it uses weakly typed objects which can be easily misstyped-->
+<!-- furthermore their is a lack of intelisense with the keys thats why we dont usually use it-->
+@*<h3>@ViewBag.PageTitle</h3>
+
+    <div>
+        Name: @ViewBag.Employee.Name <!-- you dont need to cast with viewbag  -->
+    </div>
+    <div>
+        Email: @ViewBag.Employee.Email
+    </div>
+    <div>
+        Department: @ViewBag.Employee.Department
+    </div>
+*@
+<!-- viewbag has the same issues with viewdata-->
+<!-- because of the problems that are presented with viewbag/viewdata we moslty use strongly typed view-->
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                @Model.Employee.Name
+            </div>
+            <div class="card-body text-center">
+                <!-- asp-append-version tag helper allows us to have better performance with cache memory-->
+                <!-- but at the same time it help us when the image changes to clear the cache and do the reloading-->
+                <!-- so it is the best of both worlds which means it should be in all images-->
+                <img class="card-img-top imageThumbnail" src= "@photoPath" 
+                     asp-append-version="true"/>
+                <h4>Employee ID : @Model.Employee.Id</h4>
+                <h4>Email : @Model.Employee.Email</h4>
+                <h4>Department : @Model.Employee.Department</h4>
+            </div>
+            <div class="card-footer text-center">
+                <!-- with the use of the tag helpers we can make the back button-->
+                <!-- to redirect us to the index page asp-controller = home asp-action = index -->
+                <a asp-controller="home" asp-action="index" class="btn btn-primary">Back</a>
+                <a asp-controller="home" asp-action="index" asp-route-id ="@Model.Employee.Id" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@*<h3>@Model.PageTitle</h3>
+
+    <div>
+        Name: @Model.Employee.Name <!-- should start with m capitalised -->
+    </div>
+    <div>
+        Email: @Model.Employee.Email
+    </div>
+    <div>
+        Department: @Model.Employee.Department
+    </div>*@
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script> <!-- thats how you import-->
+    <!-- from the layout the section with the name Script-->
+}
+

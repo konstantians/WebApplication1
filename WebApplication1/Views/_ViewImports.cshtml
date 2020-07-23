@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using WebApplication1.ViewModels;
+@using WebApplication1.Models;
+@using Microsoft.AspNetCore.Authorization
+<!-- in viewimports we import all the tag helpers we use because we want them in each page-->
+
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<!-- careful typos here are fatal, no intelisense-->
+<!-- viewimports works as viewstart which means it is executed before any individual -->
+<!-- page and it sets all the imports that it has in every page -->
+<!-- the same rules who apply to viewstart apply and to viewimport-->

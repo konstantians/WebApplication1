@@ -1,0 +1,33 @@
+//libman.json(library manager manifest file) shows all the outside libraries(like bootstrap,jquery)
+//which the user has download , instead of the graphical interface which a user can use
+//right click on project(webapplication1), add and choose client side library, you can use
+//the library manager immediately
+
+{
+  "version": "1.0", //version of library manage
+  "defaultProvider": "cdnjs", //you can use 3 other options i am not certain what the are
+  "libraries": [ //the libraries
+    {
+      "library": "twitter-bootstrap@4.5.0", //name of the library
+      "destination": "wwwroot/lib/bootstrap/" //where it should be installed
+    },
+    {
+      "library": "jquery@3.5.1", //to update click on the string jquery and then click on the light bulb
+      //or write it yourself
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "jquery-validate@1.19.2",
+      "destination": "wwwroot/lib/validation/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/validationUnobtrusive/"
+    }
+  ]
+}
+
+//a good practise is to put all the outside libraries in the wwwroot/lib file
+//to clean the libraries right click on the libman.json and choose clean client-side libraries
+//to restore them right click on the libman.json file and choose restore client-side libraries
+//to delete the configuration(dont know why but ok) delete libman.json or delete everything it has inside

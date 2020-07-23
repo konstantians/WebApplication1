@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Some Error";
+}
+
+@if (ViewBag.ErrorTitle == null)
+{
+    <h3>
+        Ut voluptua duo dolore amet ipsum no diam erat stet
+        gubergren vero justo clita augue dolores et elit voluptua elitr
+    </h3>
+    <h5>Please contact us on kinnaskonstantinos0@gmail.com</h5>
+}
+else
+{
+    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+    <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
+}

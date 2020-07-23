@@ -1,0 +1,92 @@
+﻿@model EmployeeEditViewModel
+
+
+@{
+    ViewBag.Title = "Edit employee";
+    var photopath = "~/images/" + (Model.ExistingPhoto ?? "profile.png");
+}
+
+<!-- we add the asp-controller = "home" and asp-action= "create to return the post-->
+<!-- to the form we dont need to do that by default it happens on its own but we do it here to be explicit-->
+<!-- to support file upload we must set on the form enctype -->
+<form enctype="multipart/form-data" asp-controller="home" asp-action="Edit" method="post" class="mt-3">
+    <!-- these hidden inputs are used to transfer the id and the existingphoto attributes to the post edit method -->
+    <input hidden asp-for="Id" />
+    <input hidden asp-for="ExistingPhoto" />
+    <div class="form-group row">
+        <label asp-for="Name" class="col-sm-2 col-form-label"></label> <!-- asp-for already creates Name to show before the input-->
+        <!-- we can overide it by adding our own label between the > < -->
+        <div class="col-sm-10">
+            <input asp-for="Name" class="form-control" placeholder="Name" />
+            <!-- if it fails validation the view showcases certain messages-->
+            <span asp-validation-for="Name"
+                  class="text-danger"></span> <!-- checks if the required field is ok, if not it shows a message-->
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Email"
+                  class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Department" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="Department" asp-items="Html.GetEnumSelectList<Dept>()"
+                    class="custom-select mr-sm-2">
+                <option>Please Select</option>
+                <!-- asp-items to add items -->
+                <!-- options arent needed with this method(asp-items)-->
+                <!-- the reason why this happens is tha please select returns string while we want enum type-->
+            </select>
+            <span class="text-danger" asp-validation-for="Department"></span>
+        </div>
+    </div>
+
+    <!-- the photo is iformfile with the asp-for tag helper that makes it that the type of the input is file-->
+    <div class="form-group row">
+        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <!-- multiple to be able to choose more than one photos -->
+                <input multiple asp-for="Photo" class="form-control custom-file-input" type="file" />
+                <label class="custom-file-label">Click here to change photo</label>
+            </div>
+        </div>
+    </div>
+    <!-- apparently you can have the row class and col-sm-4 in the same div working -->
+    <div class="form-group row col-sm-4 offset-4">
+        <img src="@photopath" class="imageThumbnail" asp-append-version="true" />
+    </div>
+    
+
+    <!-- if we want to see all validation errors we use asp-validation-summary on a div -->
+    <!-- like we do with asp-validation-for and we make its value all to check for all-->
+    <div asp-validation-summary="All" class="text-danger">
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-controller="home" asp-action="index" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+
+    <!-- you can add options in select which are not part of Dept, it is useful
+    if you want the user to choose and not let the default option which
+    will return an error -->
+
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () { //pick custom-file-input element , when it changes do
+                    var fileName = $(this).val().split("\\").pop(); //pick its value then do something
+                    $(this).next('.custom-file-label').html(fileName); //pick the element after the custom-file input element
+                    //which has custom-file-label class and make its text to be equal to filename
+                });
+            });
+        </script>
+    }
+</form>

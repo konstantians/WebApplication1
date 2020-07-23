@@ -1,0 +1,17 @@
+﻿<!-- if we pass an integer as we did here we use at model int -->
+@model int
+
+@{ 
+    ViewBag.Title = "EmployeeNotFound";
+}
+
+<div class="alert alert-danger mt-1 mb-1">
+    <h4>404 Not Found Error :</h4>
+    <hr />
+    <!-- if we have just passed an int there is no reason to add something more to the Attribute Model -->
+    <h5>Employee with ID = @Model cannot be Found</h5>
+    <hr />
+</div>
+<a class="btn btn-outline-success" style="width:auto;" asp-controller="home" asp-action="index">
+    Click here to see the rest of the employees
+</a>
